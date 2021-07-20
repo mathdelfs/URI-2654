@@ -1,0 +1,88 @@
+using System; 
+using System.Collections.Generic;
+using System.Linq;
+
+class URI {
+
+    static void Main(string[] args) { 
+    int n = int.Parse(Console.ReadLine());
+
+            List<string> nomeVencedor = new List<string>();
+            List<int> poderVencedor = new List<int>();
+            List<int> killsVencedor = new List<int>();
+            List<int> mortesVencedor = new List<int>();
+
+            for (int c = 0; c < n; c++)
+            {
+                string[] entrada = Console.ReadLine().Split(' ');
+
+                string nomeDesafiante = entrada[0];
+                int poderDesafiante = int.Parse(entrada[1]);
+                int killsDesafiante = int.Parse(entrada[2]);
+                int mortesDesafiante = int.Parse(entrada[3]);
+
+                if (nomeVencedor.Count == 0)
+                {
+                    nomeVencedor.Add(nomeDesafiante);
+                    poderVencedor.Add(poderDesafiante);
+                    killsVencedor.Add(killsDesafiante);
+                    mortesVencedor.Add(mortesDesafiante);
+                }
+
+                if (poderDesafiante > poderVencedor.Max())
+                {
+                    nomeVencedor = new List<string>() { nomeDesafiante };
+                    poderVencedor = new List<int>() { poderDesafiante };
+                    killsVencedor = new List<int>() { killsDesafiante };
+                    mortesVencedor = new List<int>() { mortesDesafiante };
+                }
+                else if (poderDesafiante == poderVencedor.Max())
+                {
+                    nomeVencedor.Add(nomeDesafiante);
+                    poderVencedor.Add(poderDesafiante);
+                    killsVencedor.Add(killsDesafiante);
+                    mortesVencedor.Add(mortesDesafiante);
+
+
+                    for (int i = 0; i < killsVencedor.Count; i++)
+                    {
+                        for (int j = 0; j < killsVencedor.Count; j++)
+                        {
+                            if (i != j && killsVencedor[i] > killsVencedor[j])
+                            {
+                                nomeVencedor.Remove(nomeVencedor[j]);
+                                poderVencedor.Remove(poderVencedor[j]);
+                                killsVencedor.Remove(killsVencedor[j]);
+                                mortesVencedor.Remove(mortesVencedor[j]);
+                            }
+                        }
+                    }
+                    while (killsVencedor.Count > 0)
+                    {
+                        if (killsVencedor.Count > 1)
+                        {
+                            for (int i = 0; i < mortesVencedor.Count; i++)
+                            {
+                                for (int j = 0; j < mortesVencedor.Count; j++)
+                                {
+                                    if (i != j && mortesVencedor[i] < mortesVencedor[j])
+                                    {
+                                        nomeVencedor.Remove(nomeVencedor[j]);
+                                        poderVencedor.Remove(poderVencedor[j]);
+                                        killsVencedor.Remove(killsVencedor[j]);
+                                        mortesVencedor.Remove(mortesVencedor[j]);
+                                    }
+                                }
+                            }
+
+                            if (mortesVencedor.Count > 1)
+                            {
+                                nomeVencedor.Sort(StringComparer.Ordinal);
+                            }
+                        }
+                    }
+                }
+         }       Console.WriteLine(nomeVencedor[0]);
+    }
+
+}
